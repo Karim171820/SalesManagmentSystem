@@ -1,0 +1,70 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="create_table_clients" author="you">
+        <createTable tableName="clients">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="mobile" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="address" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_table_products" author="you">
+        <createTable tableName="products">
+            <column name="id" type="INT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="category" type="VARCHAR(255)"/>
+            <column name="creation_date" type="DATE"/>
+            <column name="available_quantity" type="INT"/>
+            <column name="price" type="INT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_table_sales" author="you">
+        <createTable tableName="sales">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="date" type="DATE"/>
+            <column name="client_id" type="BIGINT"/>
+            <column name="sale_value" type="DOUBLE"/>
+
+            <constraints>
+                <foreignKeyConstraint foreignTableName="clients" foreignColumnNames="id"
+                                      baseTableName="sales" baseColumnNames="client_id"
+                                      constraintName="fk_sales_client_id"/>
+            </constraints>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_table_sale_products" author="you">
+        <createTable tableName="sale_products">
+            <column name="sale_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="INT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <constraints>
+                <foreignKeyConstraint foreignTableName="sales" foreignColumnNames="id"
+                                      baseTableName="sale_products" baseColumnNames="sale_id"
+                                      constraintName="fk_sale_products_sale_id"/>
+                <foreignKeyConstraint foreignTableName="products" foreignColumnNames="id"
+                                      baseTableName="sale_products" baseColumnNames="product_id"
+                                      constraintName="fk_sale_products_product_id"/>
+            </constraints>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
