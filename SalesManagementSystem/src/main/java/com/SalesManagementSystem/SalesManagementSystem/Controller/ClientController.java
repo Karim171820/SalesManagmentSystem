@@ -1,5 +1,6 @@
 package com.SalesManagementSystem.SalesManagementSystem.Controller;
 
+import com.SalesManagementSystem.SalesManagementSystem.Dtos.ClientOutputDto;
 import com.SalesManagementSystem.SalesManagementSystem.Models.Client;
 import com.SalesManagementSystem.SalesManagementSystem.Models.Product;
 import com.SalesManagementSystem.SalesManagementSystem.Services.ClientService;
@@ -23,12 +24,12 @@ public class ClientController {
 
 
     @GetMapping
-    public List<Client> getAllClient() {
+    public List<ClientOutputDto> getAllClient() {
         return clientService.getAllClients();
     }
 
     @GetMapping("/{id}")
-    public Client getClientById(@PathVariable Long id) {
+    public ClientOutputDto getClientById(@PathVariable Long id) {
         return clientService.getClientById(id);
     }
 

@@ -1,5 +1,6 @@
 package com.SalesManagementSystem.SalesManagementSystem.Controller;
 
+import com.SalesManagementSystem.SalesManagementSystem.Dtos.ProductOutputDto;
 import com.SalesManagementSystem.SalesManagementSystem.Models.Product;
 import com.SalesManagementSystem.SalesManagementSystem.Services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,12 @@ public class ProductController {
 
 
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductOutputDto> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
+    public ProductOutputDto getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 

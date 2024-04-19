@@ -2,6 +2,8 @@ package com.SalesManagementSystem.SalesManagementSystem.Repository;
 
 import com.SalesManagementSystem.SalesManagementSystem.Models.Product;
 import com.SalesManagementSystem.SalesManagementSystem.Models.Sale;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

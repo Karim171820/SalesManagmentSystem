@@ -1,8 +1,12 @@
 package com.SalesManagementSystem.SalesManagementSystem.Services;
+import com.SalesManagementSystem.SalesManagementSystem.Dtos.ProductOutputDto;
 import com.SalesManagementSystem.SalesManagementSystem.Models.Product;
 import com.SalesManagementSystem.SalesManagementSystem.Repository.ProductRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -10,7 +14,8 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-
+    @Autowired
+    private ModelMapper modelMapper;
     public Product createProduct(Product product) {
         try {
             return productRepository.save(product);
@@ -21,12 +26,22 @@ public class ProductService {
         return null;
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductOutputDto> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductOutputDto> productsDto = new ArrayList<>();
+
+        for (Product product : products) {
+            ProductOutputDto productDto = modelMapper.map(product, ProductOutputDto.class);
+            productsDto.add(productDto);
+        }
+
+        return productsDto;
     }
 
-    public Product getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public ProductOutputDto getProductById(Long id) {
+        Product product = productRepository.findById(id).orElse(null);
+        ProductOutputDto productDto = this.modelMapper.map(product, ProductOutputDto.class);
+        return productDto;
     }
 
 //    public Product updateUser(Long id, Product product) {

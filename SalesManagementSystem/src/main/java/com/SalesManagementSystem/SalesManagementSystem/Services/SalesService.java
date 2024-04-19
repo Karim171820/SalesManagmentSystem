@@ -7,6 +7,7 @@ import com.SalesManagementSystem.SalesManagementSystem.Models.Client;
 import com.SalesManagementSystem.SalesManagementSystem.Models.Product;
 import com.SalesManagementSystem.SalesManagementSystem.Models.Sale;
 import com.SalesManagementSystem.SalesManagementSystem.Repository.SaleRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,8 @@ public class SalesService {
     public SalesService(SaleRepository saleRepository) {
         this.saleRepository = saleRepository;
     }
-
+    @Autowired
+    private ModelMapper modelMapper;
     // Method to get all sales along with the total sale value
 
     public Sale createSale(Sale sale) {
@@ -40,15 +42,11 @@ public class SalesService {
 
     public GetAllSalesOutputDto getAllSalesWithTotalSaleValue() {
         List<Sale> sales = saleRepository.findAll();
-        List<SaleOutputDto> AllSales = new ArrayList<>();
-        GetAllSalesOutputDto saleDTO = new GetAllSalesOutputDto(); // Create a new instance for each Sale
+        GetAllSalesOutputDto saleDTO = new GetAllSalesOutputDto();
         SaleOutputDto saleOutputDto = new SaleOutputDto();
         for (Sale sale : sales) {
-            saleOutputDto.setId(sale.getId());
-            saleOutputDto.setDate(sale.getDate());
-            saleOutputDto.setClient(mapToClientDTO(sale.getClient())); // Assuming you have a method to map Client entity to ClientDTO
+            saleOutputDto = this.modelMapper.map(sale, SaleOutputDto.class);
             saleDTO.getSales().add(saleOutputDto);
-            AllSales.add(saleOutputDto);
         }
 
         // Calculate total price separately
@@ -57,21 +55,6 @@ public class SalesService {
 
 
         return saleDTO;
-    }
-    private ClientOutputDto mapToClientDTO(Client client) {
-        if (client == null) {
-            return null;
-        }
-
-        ClientOutputDto clientDTO = new ClientOutputDto();
-        clientDTO.setId(client.getId());
-        clientDTO.setName(client.getName());
-        clientDTO.setLastName(client.getLastName());
-        clientDTO.setMobile(client.getMobile());
-        clientDTO.setEmail(client.getEmail());
-        clientDTO.setAddress(client.getAddress());
-
-        return clientDTO;
     }
 
 }
